@@ -5,9 +5,23 @@ const SearchWeather = () => {
   const [data, setData] = useState([]);
   const [input, setInput] = useState("");
   const APIkey = "a0687ef566796926199ada401036b4bb";
-  let componentmounted = useRef(true);
+  let componentmounted = true;
 
   useEffect(() => {
+    // fetch(
+    //   `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${APIkey}`
+    // )
+    //   .then((response) => response.json())
+    //   .then((receivedData) => {
+    //     if (componentmounted) {
+    //       setData(receivedData);
+    //     }
+    //   });
+
+    //   return () => {
+    //         componentmounted.current = false;
+    //       };
+
     const fetchWeather = async () => {
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${APIkey}`
@@ -15,15 +29,15 @@ const SearchWeather = () => {
 
       if (componentmounted) {
         setData(await response.json());
-        console.log(data);
       }
       return () => {
-        componentmounted.current = false;
-      }
-
+        componentmounted = false;
+      };
     };
     fetchWeather();
-  }, [data, search]);
+  }, [search]);
+
+  console.log(data);
 
   let emoji = null;
   if (typeof data.main != "undefined") {
@@ -47,9 +61,6 @@ const SearchWeather = () => {
         return <div>...loading</div>;
     }
   }
-  let temp = (data.main.temp - 273.15).toFixed(2);
-  let temp_min = (data.main.temp_min - 273.15).toFixed(2);
-  let temp_max = (data.main.temp_max - 273.15).toFixed(2);
 
   //Date
   let d = new Date();
@@ -67,15 +78,21 @@ const SearchWeather = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setSearch(input)
-  }
+    setSearch(input);
+  };
 
   return (
     <div className="container">
       <div className="col-md-4">
         <div class="card text-white text-center" style={{ width: "18rem" }}>
           <img
-            src={`https://source.unsplash.com/600x900/?${data.weather[0].main}`}
+            // src={
+            //   data.weather
+            //     ? `https://source.unsplash.com/600x900/?${data.weather[0].main}`
+            //     : `https://source.unsplash.com/600x900/?clouds`
+            // }
+            // src={`https://source.unsplash.com/600x900/?${data.weather[0].main}`}
+            src={`https://source.unsplash.com/600x900/?cloudy`}
             class="card-img-top"
             alt="card-img"
           />
@@ -90,7 +107,9 @@ const SearchWeather = () => {
                   aria-describedby="basic-addon2"
                   name="search"
                   value={input}
-                  onChange={(e) => {setInput(e.target.value)}}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                  }}
                   required
                 />
                 <button
@@ -111,12 +130,29 @@ const SearchWeather = () => {
               </p>
               <p className="card-text">Last Updated 2mins ago</p>
               <hr />
-              <i className={`${emoji} fa-4x`}></i>
-              <h1 className="fw-bolder mb-5">{temp}&deg;C</h1>
+
+              {typeof data.main !== "undefined" ? (
+                <>
+                  <i className={`${emoji} fa-4x`}></i>
+
+                  <h1 className="fw-bolder mb-5">
+                    {(data.main.temp - 273.15).toFixed(2)}&deg;C
+                  </h1>
+                  <p className="lead fw-bolder mb-0">{data.weather[0].main}</p>
+                  <p className="lead">
+                    {(data.main.temp_min - 273.15).toFixed(2)}&deg;C |{" "}
+                    {(data.main.temp_max - 273.15).toFixed(2)}&deg;C
+                  </p>
+                </>
+              ) : (
+                <>Loading...</>
+              )}
+
+              {/* <h1 className="fw-bolder mb-5">{temp}&deg;C</h1>
               <p className="lead fw-bolder mb-0">{data.weather[0].main}</p>
               <p className="lead">
                 {temp_min}&deg;C | {temp_max}&deg;C
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
