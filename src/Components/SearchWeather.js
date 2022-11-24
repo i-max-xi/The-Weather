@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 const SearchWeather = () => {
   const [search, setSearch] = useState("Ghana");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [input, setInput] = useState("");
   const APIkey = "a0687ef566796926199ada401036b4bb";
   let componentmounted = true;
