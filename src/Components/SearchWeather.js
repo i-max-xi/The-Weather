@@ -1,43 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const SearchWeather = () => {
-  const [search, setSearch] = useState("Ghana");
+  const [search, setSearch] = useState("New York");
   const [data, setData] = useState({});
   const [input, setInput] = useState("");
-  const APIkey = "a0687ef566796926199ada401036b4bb";
-  let componentmounted = true;
+  const APIkey = process.env.REACT_APP_API_KEY;
 
   useEffect(() => {
-    // fetch(
-    //   `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${APIkey}`
-    // )
-    //   .then((response) => response.json())
-    //   .then((receivedData) => {
-    //     if (componentmounted) {
-    //       setData(receivedData);
-    //     }
-    //   });
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${APIkey}`
+    )
+      .then((response) => response.json())
+      .then((receivedData) => {
+          setData(receivedData);
+      });
+      
+  }, [APIkey, search]);
 
-    //   return () => {
-    //         componentmounted.current = false;
-    //       };
-
-    const fetchWeather = async () => {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${APIkey}`
-      );
-
-      if (componentmounted) {
-        setData(await response.json());
-      }
-      return () => {
-        componentmounted = false;
-      };
-    };
-    fetchWeather();
-  }, [search]);
-
-  console.log(data);
 
   let emoji = null;
   if (typeof data.main != "undefined") {
@@ -58,7 +37,7 @@ const SearchWeather = () => {
         emoji = "fas fa-snow-flake";
         break;
       default:
-        return <div>...loading</div>;
+        emoji = <div>...loading</div>;
     }
   }
 
@@ -82,18 +61,18 @@ const SearchWeather = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container d-flex align-items-center justify-content-center">
       <div className="col-md-4">
-        <div class="card text-white text-center" style={{ width: "18rem" }}>
+        <div className="card text-white text-center" style={{ width: "18rem" }}>
           <img
             // src={
             //   data.weather
             //     ? `https://source.unsplash.com/600x900/?${data.weather[0].main}`
             //     : `https://source.unsplash.com/600x900/?clouds`
             // }
-            // src={`https://source.unsplash.com/600x900/?${data.weather[0].main}`}
-            src={`https://source.unsplash.com/600x900/?cloudy`}
-            class="card-img-top"
+            src={`https://source.unsplash.com/600x900/?${emoji}`}
+            // src={`https://source.unsplash.com/600x900/?cloudy`}
+            className="card-img-top"
             alt="card-img"
           />
           <div className="card-img-overlay">
@@ -122,8 +101,8 @@ const SearchWeather = () => {
               </div>
             </form>
             <div className="bg-dark bg-opacity-50 py-3">
-              <h5 class="card-title">{data.name}</h5>
-              <p class="card-text lead">
+              <h5 className="card-title">{data.name}</h5>
+              <p className="card-text lead">
                 {day}, {month} {date}, {year}
                 <br />
                 {time}
