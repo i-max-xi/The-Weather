@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const SearchWeather = () => {
-  const [search, setSearch] = useState("New York");
+  const [search, setSearch] = useState("Ghana");
   const [data, setData] = useState({});
   const [input, setInput] = useState("");
   const APIkey = process.env.REACT_APP_API_KEY;
