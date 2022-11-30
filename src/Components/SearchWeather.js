@@ -81,8 +81,8 @@ const SearchWeather = () => {
                 <input
                   type="search"
                   className="form-control"
-                  placeholder="Search CIty"
-                  aria-label="Search CIty"
+                  placeholder="Search City"
+                  aria-label="Search City"
                   aria-describedby="basic-addon2"
                   name="search"
                   value={input}
