@@ -61,9 +61,9 @@ const SearchWeather = () => {
   };
 
   return (
-    <div className="container d-flex align-items-center justify-content-center">
+    <div className="container d-flex align-items-center justify-content-center" style={{ width: "100vw", height: "100vh"}}>
       <div className="col-md-4">
-        <div className="card text-white text-center" style={{ width: "18rem" }}>
+        <div className="card text-white text-center">
           <img
             // src={
             //   data.weather
@@ -126,12 +126,6 @@ const SearchWeather = () => {
               ) : (
                 <>Loading...</>
               )}
-
-              {/* <h1 className="fw-bolder mb-5">{temp}&deg;C</h1>
-              <p className="lead fw-bolder mb-0">{data.weather[0].main}</p>
-              <p className="lead">
-                {temp_min}&deg;C | {temp_max}&deg;C
-              </p> */}
             </div>
           </div>
         </div>
